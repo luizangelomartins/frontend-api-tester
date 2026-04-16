@@ -1,2 +1,2 @@
 # frontend-api-tester
-Testes com APIs públicas usando HTML, CSS e JavaScript para explorar requisições, manipulação de dados e integração no frontend.
+TESTES COM APIS PÚBLICAS USANDO HTML, CSS E JAVASCRIPT PARA EXPLORAR REQUISIÇÕES, MANIPULAÇÃO DE DADOS E INTEGRAÇÃO NO FRONTEND.
