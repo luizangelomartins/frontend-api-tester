@@ -18,7 +18,7 @@
 </div>
 
 <div align="center">
-  <img src="preview.gif">
+  <img src="preview_scale450.gif">
 </div>
 
 <div align="center">
@@ -27,5 +27,5 @@
 
 <div align="center"> 
   <a href="https://luizangelomartins.github.io/frontend-api-tester/">
-  <img width="500" src="https://img.shields.io/badge/CLIQUE AQUI PARA VISUALIZAR-151515?style=for-the-badge"> 
+  <img width="500" src="https://img.shields.io/badge/CLIQUE AQUI PARA VISUALIZAR/TESTAR-151515?style=for-the-badge"> 
 </div>
