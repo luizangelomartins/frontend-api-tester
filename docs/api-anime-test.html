@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AnimeStream</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',sans-serif;background:#0f0f0f;color:white}
+
+/* HEADER */
+header{
+  padding:20px 40px;
+  background:#000;
+  border-bottom:2px solid #ff6b00;
+}
+header h1{color:#ff6b00}
+
+/* BUSCA */
+.search-box{
+  text-align:center;
+  padding:30px;
+  background:#111;
+}
+.search-box input{
+  padding:12px;
+  width:280px;
+  border-radius:6px;
+  border:none;
+  background:#1c1c1c;
+  color:white;
+}
+.search-box button{
+  padding:12px 18px;
+  margin-left:8px;
+  border:none;
+  border-radius:6px;
+  background:#ff6b00;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  gap:20px;
+  padding:40px;
+}
+
+.card{
+  background:#1a1a1a;
+  border-radius:10px;
+  overflow:hidden;
+  cursor:pointer;
+  transition:0.3s;
+  box-shadow:0 0 15px rgba(0,0,0,0.4);
+}
+.card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 0 25px rgba(255,107,0,0.4);
+}
+.card img{
+  width:100%;
+  height:250px;
+  object-fit:cover;
+}
+.card h3{
+  padding:12px;
+  font-size:15px;
+}
+
+/* MODAL */
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.9);
+  justify-content:center;
+  align-items:center;
+  z-index:100;
+  padding:30px;
+}
+
+.modal-content{
+  background:#111;
+  max-width:1000px;
+  width:100%;
+  border-radius:12px;
+  overflow:hidden;
+  position:relative;
+  box-shadow:0 0 40px rgba(0,0,0,0.7);
+}
+
+.close{
+  position:absolute;
+  top:15px;
+  right:20px;
+  font-size:30px;
+  cursor:pointer;
+}
+
+.hero{
+  display:flex;
+  gap:40px;
+  padding:40px;
+}
+
+.hero img{
+  width:260px;
+  border-radius:10px;
+  box-shadow:0 0 20px rgba(0,0,0,0.7);
+}
+
+.hero-info h2{
+  color:#ff6b00;
+  margin-bottom:10px;
+  font-size:28px;
+}
+
+/* TAGS GÊNERO */
+.genres{
+  margin:15px 0;
+}
+.genre-tag{
+  display:inline-block;
+  padding:6px 12px;
+  margin:4px 6px 4px 0;
+  border-radius:20px;
+  font-size:13px;
+  font-weight:bold;
+  background:linear-gradient(45deg,#ff6b00,#ff9f43);
+  color:black;
+  box-shadow:0 0 10px rgba(255,107,0,0.4);
+}
+
+/* CLASSIFICAÇÃO INDICATIVA */
+.rating-badge{
+  display:inline-block;
+  padding:6px 12px;
+  border-radius:6px;
+  font-weight:bold;
+  margin-left:10px;
+  font-size:14px;
+  color:white;
+}
+
+/* CORES REAIS */
+.G{background:#2ecc71}
+.PG{background:#3498db}
+.PG-13{background:#f1c40f;color:black}
+.R{background:#e67e22}
+.RPLUS{background:#e74c3c}
+.RX{background:#8e44ad}
+
+/* INFO */
+.hero-info p{
+  margin-bottom:10px;
+  color:#ddd;
+  line-height:1.5;
+}
+
+.score{
+  display:inline-block;
+  background:#ff6b00;
+  padding:6px 10px;
+  border-radius:6px;
+  font-weight:bold;
+  margin-left:10px;
+}
+
+@media(max-width:800px){
+  .hero{
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>AnimeStream</h1>
+</header>
+
+<div class="search-box">
+  <input type="text" id="searchInput" placeholder="Buscar anime...">
+  <button onclick="searchAnime()">Buscar</button>
+</div>
+
+<div id="animeList" class="grid"></div>
+
+<!-- MODAL -->
+<div id="animeModal" class="modal">
+  <div class="modal-content" id="modalContent">
+    <span class="close" onclick="closeModal()">&times;</span>
+  </div>
+</div>
+
+<script>
+let currentResults = [];
+
+function getRatingClass(rating){
+  if(!rating) return "";
+  if(rating.includes("G")) return "G";
+  if(rating.includes("PG-13")) return "PG-13";
+  if(rating.includes("PG")) return "PG";
+  if(rating.includes("R - 17+")) return "R";
+  if(rating.includes("R+")) return "RPLUS";
+  if(rating.includes("Rx")) return "RX";
+  return "";
+}
+
+async function searchAnime(){
+  const query = document.getElementById("searchInput").value.trim();
+  if(!query) return alert("Digite algo!");
+
+  const list = document.getElementById("animeList");
+  list.innerHTML = "Carregando...";
+
+  try{
+    const res = await fetch(`https://api.jikan.moe/v4/anime?q=${encodeURIComponent(query)}&limit=12`);
+    const data = await res.json();
+    currentResults = data.data;
+    renderList(currentResults);
+  }catch{
+    list.innerHTML = "Erro ao buscar.";
+  }
+}
+
+function renderList(animes){
+  const list = document.getElementById("animeList");
+  list.innerHTML = "";
+
+  if(!animes.length){
+    list.innerHTML = "Nenhum resultado.";
+    return;
+  }
+
+  animes.forEach((anime,index)=>{
+    list.innerHTML += `
+      <div class="card" onclick="openModal(${index})">
+        <img src="${anime.images?.jpg?.image_url || ''}">
+        <h3>${anime.title}</h3>
+      </div>
+    `;
+  });
+}
+
+function openModal(index){
+  const anime = currentResults[index];
+  const modal = document.getElementById("animeModal");
+  const content = document.getElementById("modalContent");
+
+  const genres = anime.genres.map(g=>`<span class="genre-tag">${g.name}</span>`).join("");
+  const ratingClass = getRatingClass(anime.rating);
+
+  content.innerHTML = `
+    <span class="close" onclick="closeModal()">&times;</span>
+    <div class="hero">
+      <img src="${anime.images?.jpg?.large_image_url || ''}">
+      <div class="hero-info">
+        <h2>${anime.title}</h2>
+
+        <p>
+          <strong>Episódios:</strong> ${anime.episodes ?? "?"}
+          <span class="score">⭐ ${anime.score ?? "?"}</span>
+          <span class="rating-badge ${ratingClass}">${anime.rating ?? "N/A"}</span>
+        </p>
+
+        <p><strong>Status:</strong> ${anime.status}</p>
+
+        <div class="genres">${genres}</div>
+
+        <p>${anime.synopsis || "Sem descrição disponível."}</p>
+
+        <p>
+          <a href="${anime.url}" target="_blank" style="color:#ff6b00">
+            Ver no MyAnimeList
+          </a>
+        </p>
+      </div>
+    </div>
+  `;
+
+  modal.style.display = "flex";
+}
+
+function closeModal(){
+  document.getElementById("animeModal").style.display = "none";
+}
+
+document.getElementById("animeModal").addEventListener("click",function(e){
+  if(e.target === this) closeModal();
+});
+
+document.getElementById("searchInput").addEventListener("keydown",function(e){
+  if(e.key==="Enter") searchAnime();
+});
+</script>
+
+</body>
+</html>
