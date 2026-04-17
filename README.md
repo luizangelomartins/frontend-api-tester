@@ -18,6 +18,10 @@
 </div>
 
 <div align="center">
+  <img src="preview_w450_scale.gif">
+</div>
+
+<div align="center">
   <hr width="500em" />
 </div>
 
