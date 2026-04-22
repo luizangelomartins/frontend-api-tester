@@ -20,7 +20,6 @@
       color: #fff;
     }
 
-    /* MENU LATERAL */
     .sidebar {
       width: 220px;
       background: #020617;
@@ -45,7 +44,6 @@
       color: #cbd5f5;
       border-radius: 8px;
       transition: 0.3s;
-      position: relative;
     }
 
     .menu a:hover {
@@ -54,7 +52,6 @@
       transform: translateX(5px);
     }
 
-    /* ÁREA PRINCIPAL */
     .content {
       flex: 1;
       display: flex;
@@ -65,12 +62,12 @@
 
     .content img {
       max-width: 50%;
-    max-height: 80%;
-    border-radius: 15px;
-    box-shadow: 0 0 30px rgba(0,0,0,0.5);
-    opacity: 0;
-    transition: 0.4s;
-    padding: 5%;
+      max-height: 80%;
+      border-radius: 15px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.5);
+      opacity: 0;
+      transition: 0.4s;
+      padding: 5%;
     }
 
     .content img.active {
@@ -82,7 +79,6 @@
       font-size: 20px;
       position: absolute;
     }
-
   </style>
 </head>
 <body>
@@ -90,41 +86,67 @@
   <!-- MENU -->
   <div class="sidebar">
     <h2>Menu</h2>
-
-    <div class="menu">
-      <a href="api-pokemon-test.html"
-         onmouseover="showImage('img/pokemon.svg')">
-         Pokedex
-      </a>
-
-      <a href="api-games-test.html"
-         onmouseover="showImage('img/games.avif')">
-         Games
-      </a>
-
-      <a href="api-yugioh-test.html"
-         onmouseover="showImage('img/yugioh.png')">
-         Yu Gi Oh
-      </a>
-	  
-	  <a href="api-anime-test.html"
-         onmouseover="showImage('img/animes.webp')">
-         Animê
-      </a>
-    </div>
+    <div class="menu" id="menu"></div>
   </div>
 
   <!-- CONTEÚDO -->
   <div class="content">
+    <span class="placeholder" id="placeholder">Passe o mouse no menu</span>
     <img id="preview" src="">
   </div>
 
   <script>
     function showImage(src) {
       const img = document.getElementById("preview");
+      const placeholder = document.getElementById("placeholder");
+
       img.src = src;
       img.classList.add("active");
+
+      if (placeholder) {
+        placeholder.style.display = "none";
+      }
     }
+
+    async function carregarMenu() {
+      const menu = document.getElementById("menu");
+
+      try {
+        const response = await fetch('./config/menu.json');
+
+        if (!response.ok) {
+          throw new Error('Erro HTTP: ' + response.status);
+        }
+
+        const itens = await response.json();
+
+        itens.forEach(i => {
+          if (!i.nome || !i.link || !i.imagem) return; // validação básica
+
+          const a = document.createElement('a');
+
+          a.href = i.link;
+          a.textContent = i.nome;
+
+          a.addEventListener('mouseover', () => {
+            showImage(i.imagem);
+          });
+
+          menu.appendChild(a);
+        });
+
+      } catch (erro) {
+        console.error('Erro ao carregar menu:', erro);
+
+        menu.innerHTML = `
+          <span style="color:red;">
+            Erro ao carregar menu
+          </span>
+        `;
+      }
+    }
+
+    carregarMenu();
   </script>
 
 </body>
