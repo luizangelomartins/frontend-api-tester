@@ -173,12 +173,19 @@ header {
 .steam-btn:hover {
   background:#6ea512;
 }
+
+a {
+  all: unset;
+  cursor: pointer; /* opcional, mantém o comportamento de clique */
+}
 </style>
 </head>
 
 <body>
 
-<header>Steam Deals Finder</header>
+<header>
+	<a href="index.html">Steam Deals Finder</a>
+</header>
 
 <div class="search-box">
   <input type="text" id="gameInput" placeholder="Digite nome do jogo...">
