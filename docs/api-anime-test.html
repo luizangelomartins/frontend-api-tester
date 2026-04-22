@@ -170,6 +170,11 @@ header h1{color:#ff6b00}
   margin-left:10px;
 }
 
+a {
+  all: unset;
+  cursor: pointer; /* opcional, mantém o comportamento de clique */
+}
+
 @media(max-width:800px){
   .hero{
     flex-direction:column;
@@ -182,7 +187,9 @@ header h1{color:#ff6b00}
 <body>
 
 <header>
-  <h1>AnimeStream</h1>
+  <h1>
+	<a href="index.html">AnimeStream</a>
+  </h1>
 </header>
 
 <div class="search-box">
