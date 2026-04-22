@@ -200,13 +200,20 @@ header h1{
     grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
   }
 }
+
+a {
+  all: unset;
+  cursor: pointer; /* opcional, mantém o comportamento de clique */
+}
 </style>
 </head>
 
 <body>
 
 <header>
-  <h1>Interactive Pokédex</h1>
+  <h1>
+	<a href="index.html">Interactive Pokédex</a>
+</h1>
   <button id="layoutToggle" onclick="toggleLayout()">Alternar Grid / Único</button>
 </header>
 
