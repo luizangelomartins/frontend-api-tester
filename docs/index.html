@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Menu</title>
 
+  <!-- FAVICON -->
+  <link rel="icon" href="/icons/favicon.ico" type="image/x-icon">
+
   <style>
     * {
       margin: 0;
@@ -79,12 +82,11 @@
       font-size: 20px;
       position: absolute;
     }
-	
-	a {
-	  all: unset;
-	  cursor: pointer;
-	}
-	
+
+    a {
+      all: unset;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -92,8 +94,8 @@
   <!-- MENU -->
   <div class="sidebar">
     <h2>
-		<a href="https://github.com/luizangelomartins/frontend-api-tester">Menu</a>
-	</h2>
+      <a href="https://github.com/luizangelomartins/frontend-api-tester">Menu</a>
+    </h2>
     <div class="menu" id="menu"></div>
   </div>
 
@@ -129,7 +131,7 @@
         const itens = await response.json();
 
         itens.forEach(i => {
-          if (!i.nome || !i.link || !i.imagem) return; // validação básica
+          if (!i.nome || !i.link || !i.imagem) return;
 
           const a = document.createElement('a');
 
