@@ -15,8 +15,8 @@
     "imagem": "img/yugioh.png"
   },
   {
-    "_nome": "Animê",
-    "_link": "api-anime-test.html",
-    "_imagem": "img/animes.webp"
+    "nome": "Animê",
+    "link": "api-anime-test.html",
+    "imagem": "img/animes.webp"
   }
 ]
