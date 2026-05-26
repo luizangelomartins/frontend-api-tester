@@ -1,9 +1,5 @@
 
 <div align="center">
-  <img width="500em" src="https://github-readme-stats.vercel.app/api/pin/?username=luizangelomartins&repo=frontend-api-tester&theme=dark&hide_border=true">
-</div>
-
-<div align="center">
   <hr width="500em" />
 </div>
 
